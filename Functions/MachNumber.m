@@ -1,6 +1,6 @@
 function [mach] = MachNumber(T)
     addpath('Data');
-    load('constants.mat', 'gamma_m', 'R_m');
+    load('constants.mat', 'Atm');
 
-    mach = sqrt(gamma_m * R_m * T);
+    mach = sqrt(Atm.gamma * Atm.R * T);
 end

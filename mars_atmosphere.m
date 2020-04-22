@@ -8,7 +8,7 @@ addpath('Functions');
 
 %% Plot Mars atmosphere density
 h = 0:120000; % m - Altitudes at which the density will be calculated
-[T, P, rho1, rho2] = MarsAtmosphere(h);
+[T, P, rho, rho2] = MarsAtmosphere(h);
 
 %% Plots
 figure;
