@@ -13,6 +13,8 @@ mu_m = 42828;
 %% Mars atmosphere constants
 hs = 11.1e3; % km - Atmospheric scale height
 rho0 = 0.020; % kg/m^3 - Atmoshpere density at h = 0
+gamma_m = 1.29;
+R_m = 191.8;
 
 %% Orbit constants
 alt = 500; % km - Orbit altitude
