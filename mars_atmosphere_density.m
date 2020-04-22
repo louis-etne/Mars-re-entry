@@ -9,7 +9,7 @@ addpath('Functions');
 load('constants.mat', 'hs', 'rho0');
 
 %% Plot Mars atmosphere density
-h = 0:120000;
+h = 0:120000; % m - Altitudes at which the density will be calculated
 
 figure;
 ax = axes;
