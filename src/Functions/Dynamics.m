@@ -21,7 +21,11 @@ function f = Dynamics(t, y, Mars, Atm, Vehicle)
     Laero = Pdyn * Vehicle.S * Vehicle.CLalpha * alpha;
     Maero = Pdyn * Vehicle.S * Vehicle.d * (Vehicle.CMalpha * alpha + (Vehicle.d / (2*v)) * Vehicle.CMq*q);
     
-    f(1) = v*sin(gamma);
+    if (h <= 0)
+        f(1) = 0;
+    else
+        f(1) = v*sin(gamma);
+    end
     f(2) = -Daero / Vehicle.mass - g*sin(gamma);
     f(3) = (v/r) * cos(gamma);
     f(4) = (1/v) * (Laero/Vehicle.mass + ((v.^2/r) - g)*cos(gamma));

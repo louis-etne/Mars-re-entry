@@ -1,6 +1,3 @@
-function [mach] = MachNumber(T)
-    addpath('Data');
-    load('constants.mat', 'Atm');
-
-    mach = sqrt(Atm.gamma * Atm.R * T);
+function mach = MachNumber(v, T)
+    mach = v ./ SpeedOfSound(T); % No dimensions
 end

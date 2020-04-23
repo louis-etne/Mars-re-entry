@@ -8,7 +8,7 @@ addpath('Functions');
 
 %% Plot Mars atmosphere density
 h = 0:120000; % m - Altitudes at which the density will be calculated
-[T, P, rho, rho2] = MarsAtmosphere(h);
+[T, P, rho] = MarsAtmosphere(h);
 
 %% Plots
 figure;
@@ -22,7 +22,7 @@ figure;
 hold on;
 plot(T, h);
 ylabel('Altitude (m)');
-xlabel('Temperature (°C)');
+xlabel('Temperature (K)');
 title('Temperature versus Altitude');
 
 figure;
@@ -36,7 +36,7 @@ figure;
 ax = axes;
 hold on;
 plot(T, rho);
-xlabel('Temperature (°C)');
+xlabel('Temperature (K)');
 ylabel('Density \rho (kg.m^{-3})');
 title('Density versus Temperature');
 set(ax, 'Xdir', 'reverse');
