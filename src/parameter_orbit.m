@@ -14,3 +14,6 @@ load('constants.mat', 'Mars', 'Orbit');
 
 % speed departure orbit
 V_departure_orbit = sqrt(2 * (-Mars.mu / (2 * Orbit.altitude) + Mars.mu / Orbit.altitude));
+
+%Supposition for the calculation : Mars Atmosphere begin at 120 km high
+
