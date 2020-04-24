@@ -2,50 +2,18 @@ clear all;
 close all;
 clc;
 
-%% Load data
-addpath('Data');
-addpath('Functions');
+% NASA model stops at 100km
+h1 = 0:2:100;
+% Teacher models stop at 150km but is less precise
+h2 = 110:10:150;
+% So we use the NASA model first and after the teacher
+h = [h1 h2] * 1000; % Convert h in meters
 
-%% Plot Mars atmosphere density
-h = 0:120000; % m - Altitudes at which the density will be calculated
-[T, P, rho] = MarsAtmosphere(h);
-
-%% Plots
-figure;
-hold on;
-plot(rho, h);
-ylabel('Altitude (m)');
-xlabel('Density \rho (kg.m^{-3})');
-title('Density versus Altitude');
-
-figure;
-hold on;
-plot(T, h);
-ylabel('Altitude (m)');
-xlabel('Temperature (K)');
-title('Temperature versus Altitude');
-
-figure;
-hold on;
-plot(P, h);
-ylabel('Altitude (m)');
-xlabel('Pressure (Pa)');
-title('Pressure versus Altitude');
-
-figure;
-ax = axes;
-hold on;
-plot(T, rho);
-xlabel('Temperature (K)');
-ylabel('Density \rho (kg.m^{-3})');
-title('Density versus Temperature');
-set(ax, 'Xdir', 'reverse');
-
-figure;
-ax = axes;
-hold on;
-plot(P, rho);
-xlabel('Pressure (Pa)');
-ylabel('Density \rho (kg.m^{-3})');
-title('Density versus Pressure');
-set(ax, 'Xdir', 'reverse');
+% Temperature is in K
+t1 = [214, 213.8, 213.4, 212.4, 209.2, 205, 201.4, 197.8,...
+      194.6, 191.4, 188.2, 185.2, 182.5, 180, 177.5, 175, 172.5, 170,...
+      167.5, 164.8, 162.4, 160, 158, 156, 154.1, 152.2, 150.3, 148.7,...
+      147.2, 145.7, 144.2, 143, 142, 141, 140, 139.5, 139, 139, 139,...
+      139, 139, 139, 139, 139, 139, 139, 139, 139, 139, 139, 139];
+t2 = [149.4, 159.7, 170, 245.1, 288.6];
+T = [t1 t2];

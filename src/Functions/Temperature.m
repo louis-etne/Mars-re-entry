@@ -1,9 +1,11 @@
 function T = Temperature(h)
     function t = temp(hi)
-        if hi > 7000
+        if hi < 7000
+            t = -31.0 - 0.000998 * hi; % °C - Temperature
+        elseif hi >= 7000 && hi <= 65000
             t = -23.4 - 0.00222 * hi; % °C - Temperature
         else
-            t = -31.0 - 0.000998 * hi; % °C - Temperature
+            t = -167.7; % °C - Temperature
         end
     end
 
