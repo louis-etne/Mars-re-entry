@@ -8,11 +8,11 @@ classdef FlowRegime
     methods
         function regime = getRegime(M)
             if M >= 1.3
-                regime = MFlowRegime.Supersonic;
+                regime = FlowRegime.Supersonic;
             elseif M >= 0.8 && M < 1.3
-                regime = MFlowRegime.Transonic;
+                regime = FlowRegime.Transonic;
             else
-                regime = MFlowRegime.Subsonic;
+                regime = FlowRegime.Subsonic;
             end
         end
     end
