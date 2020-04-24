@@ -9,7 +9,7 @@ classdef FlowRegime
         function regime = getRegime(M)
             if M >= 1.3
                 regime = MFlowRegime.Supersonic;
-            elseif M >= 0.8 && M > 1.3
+            elseif M >= 0.8 && M < 1.3
                 regime = MFlowRegime.Transonic;
             else
                 regime = MFlowRegime.Subsonic;
