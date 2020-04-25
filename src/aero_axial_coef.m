@@ -13,3 +13,7 @@ c_test = f_CA.p1 * alpha_test.^2 + f_CA.p2 * alpha_test + f_CA.p3
 
 hold on;
 plot(alpha_test, c_test);
+
+
+addpath('Data');
+save('Data\fit_areo_axial_coef', 'f_CA_6_10');
