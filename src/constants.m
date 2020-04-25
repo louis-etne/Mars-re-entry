@@ -41,6 +41,9 @@ Vehicle.S = pi * ((Vehicle.Dimensions.d1 / 2) * cosd(Vehicle.Dimensions.theta1))
 Vehicle.d = 0.05; % m - Vehicle aerodynamic dimension
 Vehicle.C_A = 1.5; % Axial force coefficient
 Vehicle.C_N = 0.03; % Normal force coefficient
+Vehicle.Thrust = 400;   % N
+Vehicle.Isp = 3000;     % m/s
+Vehicle.MassFlow = Vehicle.Thrust / Vehicle.Isp; % kg/s
 
 %% Export constants
 save('Data/constants.mat');
