@@ -86,12 +86,12 @@ if nargout == 0
     % Note that if you plot orbit trajectories in the Earth-Centered-
     % Inertial, the orientation of the contintents will be misleading.
     topo2 = [topo(:,181:360) topo(:,1:180)]; %# ok<NODEF>
-    
+    mars_texture = imread('./Data/2k_mars.jpg');
     % Define surface settings
-    props.FaceColor= 'red';
-    % props.EdgeColor = 'black';
+    props.Cdata = mars_texture;
+    props.FaceColor= 'texturemap';
+    props.EdgeColor = 'none';
     props.FaceLighting = 'phong';
-    props.Cdata = topo2;
     % Create the sphere with Earth topography and adjust colormap
     surface(x,y,z,props,'parent',cax)
     colormap(topomap1)
