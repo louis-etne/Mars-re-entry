@@ -1,4 +1,4 @@
-function [Orbit_ECI] = orbites(a_m, e, M_deg, i_deg)
+function [Orbit_ECI] = Orbites(a_m, e, M_deg, i_deg)
 
 mu = 3.98618e14;
 ID = 25544;
