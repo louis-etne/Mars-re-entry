@@ -13,8 +13,7 @@ function T = Temperature2(h)
         elseif hi > 70000 && hi <= 100000
             t = 139; % K - Temperature
         else
-            t = f_100_150.a * exp(hi * f_100_150.b) +...
-                f_100_150.c * exp(hi * f_100_150.d); % K - Temperature
+            t = f_100_150.p1 * hi + f_100_150.p2; % K - Temperature
         end
     end
 

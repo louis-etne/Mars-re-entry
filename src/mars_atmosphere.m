@@ -57,13 +57,13 @@ T_10_70 = t1(6 : 36);
  
  %from 100 to 150
  
- h2 = h2 * 1e3;
+ h2 = (100 : 10 : 120) * 1e3
+ t2 = [139, 149.4, 159.7];
  addpath('Functions');
- f_100_150 = fit(transpose(h2), transpose(t2), 'exp2');
+ f_100_150 = fit(transpose(h2), transpose(t2), 'poly1');
 
-h_test_100_150 = (100:0.1:150) * 1e3;
-t_test_100_150 = f_100_150.a * exp(h_test_100_150 * f_100_150.b) + ...
-                 f_100_150.c * exp(h_test_100_150 * f_100_150.d);
+h_test_100_150 = (100:0.1:120) * 1e3;
+t_test_100_150 = f_100_150.p1 * h_test_100_150 + f_100_150.p2;
 
 figure();
 plot(h2, t2);
