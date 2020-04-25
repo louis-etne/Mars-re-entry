@@ -1,14 +1,21 @@
-function T = Temperature(h)
+function T = Temperature2(h)    
+    
+    load('Data\fit_temp', 'f_0_10', 'f_10_70', 'f_100_150');
+
     function t = temp(hi)
-        if hi < 7000
-            t = -31.0 - 0.000998 * hi; % °C - Temperature
-        elseif hi >= 7000 && hi <= 65000
-            t = -23.4 - 0.00222 * hi; % °C - Temperature
+        if hi < 10000
+            t = f_0_10.p1 * hi.^3 + f_0_10.p2 * hi.^2 +...
+                f_0_10.p3 * hi.^1 + f_0_10.p4; % K - Temperature
+        elseif hi >= 10000 && hi <= 70000
+            t = f_10_70.p1 * hi.^4 + f_10_70.p2 * hi.^3 + ...
+                  f_10_70.p3 * hi.^2 + f_10_70.p4 * hi.^1 + ...
+                  f_10_70.p5; % K - Temperature
+        elseif hi > 70000 && hi <= 100000
+            t = 139; % K - Temperature
         else
-            t = -167.7; % °C - Temperature
+            t = f_100_150.p1 * hi + f_100_150.p2; % K - Temperature
         end
     end
 
-    T = arrayfun(@temp, h) + 273.15; % K - Temperature
+    T = arrayfun(@temp, h); % K - Temperature
 end
-
