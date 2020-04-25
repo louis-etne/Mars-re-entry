@@ -36,12 +36,15 @@ MarsSphere(gcf, 'km')
 hold on
 plot3(InitialOrbit(180:361, 1), InitialOrbit(180:361, 2), InitialOrbit(180:361, 3), '-b', 'LineWidth', 1.5)
 plot3(TransferOrbit(1:181, 1), TransferOrbit(1:181, 2), TransferOrbit(1:181, 3), '-c', 'LineWidth', 1.5)
+ax = gca;
+ax.Clipping = 'off';
 hold off
 xlabel('Pos x [km]');
 ylabel('Pos y [km]');
 zlabel('Pos z [km]');
 grid on;
 axis equal
+
 
 burnTime = Vehicle.mass/Vehicle.MassFlow * (1-exp(-DeltaV/Vehicle.Isp));    % s - duration of the deceleration burn
 mass_afterBurn = Vehicle.mass - Vehicle.MassFlow * burnTime;                % kg - mass of Vehicle after burn
