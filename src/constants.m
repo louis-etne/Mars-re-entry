@@ -37,14 +37,10 @@ Vehicle.Dimensions.theta1 = 20.00; % degrees
 Vehicle.Dimensions.theta2 = 40.00; % degrees
 Vehicle.Dimensions.theta3 = 62.18; % degrees
 
-Vehicle.J = 1.5; % kg/m^2 - Vehicle intertia
 Vehicle.S = pi * ((Vehicle.Dimensions.d1 / 2) * cosd(Vehicle.Dimensions.theta1))^2 ; % m^2 - Vehicle aerodynamic surface
 Vehicle.d = 0.05; % m - Vehicle aerodynamic dimension
-Vehicle.CD0 = 1.20; % Drag coefficient
-Vehicle.CLalpha = 0.80; % Lift coefficient
-Vehicle.CMalpha = -0.07; % Couple coefficient
-Vehicle.CMq = -0.05; % Damping coefficient
-Vehicle.CMdelta = 0.10; % Lift device coefficient
+Vehicle.C_A = 1.5; % Axial force coefficient
+Vehicle.C_N = 0.03; % Normal force coefficient
 
 %% Export constants
 save('Data/constants.mat');
