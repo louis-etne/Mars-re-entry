@@ -19,8 +19,8 @@ Atm.mean_molar_mass = 43.34e-3; % kg/mol - Mean molar mass of gas
 Atm.R = Physics.R / Atm.mean_molar_mass; % K/(kg.K) - Specific gas constant
 
 %% Orbit constants
-Orbit.height = 500; % km - Orbit height
-Orbit.altitude = Mars.radius + Orbit.height; % km - Orbit altitude
+Orbit.altitude = 500; % km - Orbit altitude
+Orbit.radius = Mars.radius + Orbit.altitude; % km - Orbit radius
 
 %% Vehicle constants
 Vehicle.mass = 1500; % kg - Vehicle mass
