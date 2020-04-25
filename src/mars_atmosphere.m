@@ -80,4 +80,4 @@ syms x;
 figure();
 plot(T, h);
 hold on;
-plot(Temperature2(h), h);
+plot(Temperature(h), h);
