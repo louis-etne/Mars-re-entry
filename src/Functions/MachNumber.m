@@ -1,3 +1,3 @@
-function mach = MachNumber(v, h)
-    mach = v ./ SpeedOfSound(h); % No dimensions
+function mach = MachNumber(v, h, Atm)
+    mach = v ./ SpeedOfSound(h, Atm); % No dimensions
 end

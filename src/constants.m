@@ -37,9 +37,12 @@ Vehicle.Dimensions.theta1 = 20.00; % degrees
 Vehicle.Dimensions.theta2 = 40.00; % degrees
 Vehicle.Dimensions.theta3 = 62.18; % degrees
 
+Vehicle.J = 928.951;
 Vehicle.S = pi * ((Vehicle.Dimensions.d1 / 2) * cosd(Vehicle.Dimensions.theta1))^2 ; % m^2 - Vehicle aerodynamic surface
-Vehicle.d = 0.05; % m - Vehicle aerodynamic dimension
-Vehicle.C_N = 0.03; % Normal force coefficient
+Vehicle.d = 0.53113125; % m - Vehicle aerodynamic dimension
+Vehicle.CMalpha = -0.07; % Couple coefficient
+Vehicle.CMq = -0.05; % Damping coefficent
+Vehicle.CMdelta = 0.10; % High-lift device coefficient
 Vehicle.Thrust = 400;   % N
 Vehicle.Isp = 3000;     % m/s
 Vehicle.MassFlow = Vehicle.Thrust / Vehicle.Isp; % kg/s

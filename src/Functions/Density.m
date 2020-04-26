@@ -1,7 +1,4 @@
-function rho = Density(h)
-    addpath('Data');
-    load('constants.mat', 'Atm');
-    
+function rho = Density(h, Atm)
     function r = tmp(hi)
         if hi >= 120000
             r = 0;
