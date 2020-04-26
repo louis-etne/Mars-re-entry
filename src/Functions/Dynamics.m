@@ -30,6 +30,10 @@ function f = Dynamics(t, y, Mars, Atm, Vehicle, aero_coefs, sim_params)
     Laero = Pdyn * Vehicle.S * CL * alpha;
     Maero = Pdyn * Vehicle.S * Vehicle.d * (Vehicle.CMalpha * alpha + (Vehicle.d / (2*v)) * Vehicle.CMq*q);
     
+    if (h <= sim_params.parachute_at)
+        Daero = Daero + Vehicle.Parachute.CD .* ((rho .* v.^2) / 2) * Vehicle.Parachute.S;
+    end
+    
     if (h <= 0)
         f(1) = 0;
     else
