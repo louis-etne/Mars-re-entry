@@ -39,7 +39,6 @@ Vehicle.Dimensions.theta3 = 62.18; % degrees
 
 Vehicle.S = pi * ((Vehicle.Dimensions.d1 / 2) * cosd(Vehicle.Dimensions.theta1))^2 ; % m^2 - Vehicle aerodynamic surface
 Vehicle.d = 0.05; % m - Vehicle aerodynamic dimension
-Vehicle.C_A = 1.5; % Axial force coefficient
 Vehicle.C_N = 0.03; % Normal force coefficient
 Vehicle.Thrust = 400;   % N
 Vehicle.Isp = 3000;     % m/s

@@ -1,7 +1,4 @@
-function f = Dynamics(t, y, Mars, Atm, Vehicle, alpha)
-    % Don't import data with load or use function in Dynamics,
-    % It's really slow otherwise
-
+function f = Dynamics(t, y, Mars, Vehicle, alpha)
     % TODO
     % - CA and CN
     % - 
@@ -16,11 +13,15 @@ function f = Dynamics(t, y, Mars, Atm, Vehicle, alpha)
     % Intermediate calculation
     r = h + Mars.radius * 1000;
     g = Mars.mu / r^2; % m/s^2 - Gravitationnal acceleration at r
-    rho = Atm.rho0 * exp(-h/Atm.hs); % kg/m^3 - Air density at h
+    rho = Density(h); % kg/m^3 - Air density at h
     Pdyn = (1/2) * rho * v^2; % Dynamic pressure
+    M = MachNumber(v, h); % Mach number
     
-    CL = -Vehicle.C_A * sin(alpha) + Vehicle.C_N * cos(alpha);
-    CD = Vehicle.C_A * cos(alpha) + Vehicle.C_N * sin(alpha);
+    CA = AxialForceCoef(M, alpha);
+    CN = Vehicle.C_N;
+    
+    CL = -CA * sin(alpha) + CN * cos(alpha);
+    CD = CA * cos(alpha) + CN * sin(alpha);
     
     Daero = Pdyn * Vehicle.S * CD;
     Laero = Pdyn * Vehicle.S * CL;

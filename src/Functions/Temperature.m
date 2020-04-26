@@ -1,6 +1,6 @@
-function T = Temperature2(h)    
-    
-    load('Data\fit_temp', 'f_0_10', 'f_10_70', 'f_100_150');
+function T = Temperature(h)    
+    addpath('Data');
+    load('fit_temp', 'f_0_10', 'f_10_70', 'f_100_150');
 
     function t = temp(hi)
         if hi < 10000

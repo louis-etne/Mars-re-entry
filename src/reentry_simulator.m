@@ -19,16 +19,17 @@ ts = [0 125]; % s - Time span, [t0 tf]
 
 %% Simulation
 options = odeset('reltol', 1e-8);
-[t, x0] = ode45(@(t0,y0)Dynamics(t0, y0, Mars, Atm, Vehicle, deg2rad(0)), ts, xi, options);
+[t, x0] = ode45(@(t0,y0)Dynamics(t0, y0, Mars, Vehicle, deg2rad(0)), ts, xi, options);
 x0 = real(x0);
 
-[tm10, xm10] = ode45(@(tm10,ym10)Dynamics(tm10, ym10, Mars, Atm, Vehicle, deg2rad(-10)), ts, xi, options);
+[tm10, xm10] = ode45(@(tm10,ym10)Dynamics(tm10, ym10, Mars, Vehicle, deg2rad(-10)), ts, xi, options);
 xm10 = real(xm10);
 
-[t10, x10] = ode45(@(t10,y10)Dynamics(t10, y10, Mars, Atm, Vehicle, deg2rad(10)), ts, xi, options);
+[t10, x10] = ode45(@(t10,y10)Dynamics(t10, y10, Mars, Vehicle, deg2rad(10)), ts, xi, options);
 x10 = real(x10);
 
-[t20, x20] = ode45(@(t20,y20)Dynamics(t20, y20, Mars, Atm, Vehicle, deg2rad(20)), ts, xi, options);
+[t20, x20] = ode45(@(t20,y20)Dynamics(t20, y20, Mars, 
+Vehicle, deg2rad(20)), ts, xi, options);
 x20 = real(x20);
 
 %% Assignations
