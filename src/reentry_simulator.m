@@ -24,6 +24,7 @@ xi = [v_ini, gamma_ini, h_ini, phi_ini, theta_ini, q_ini];
 %% Simulation parameters
 sim_params.parachute_at = 8000; % m - Open parachute at 8km
 sim_params.parachute_mach = 1.8; % Max mach number for parachute
+sim_params.controlled = false;
 ts = [0 300]; % s - Time span, [t0 tf]
 
 %% Simulation
