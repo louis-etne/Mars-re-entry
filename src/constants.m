@@ -49,7 +49,7 @@ Vehicle.MassFlow = Vehicle.Thrust / Vehicle.Isp; % kg/s
 
 Vehicle.Parachute.CD = 1.17; % Drag coefficient
 Vehicle.Parachute.D = 9.75; % m - Parachute diameter
-Vehicle.Parachute.S = pi * Vehicle.Parachute.D^2 / 4; % m^2 - Surface area
+Vehicle.Parachute.S =  4 * pi * Vehicle.Parachute.D^2 / 8; % m^2 - Surface area
 
 %% Export constants
 save('Data/constants.mat');
