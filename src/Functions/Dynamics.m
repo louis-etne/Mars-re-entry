@@ -27,7 +27,24 @@ function f = Dynamics(t, y, Mars, Atm, Vehicle, aero_coefs, sim_params)
     CD = CA * cos(alpha) + CN * sin(alpha);
     
     if (sim_params.controlled)
-        %% TODO
+        B = CD * Vehicle.S / Vehicle.mass;
+        dv_aero = sim_params.v_des - sqrt(v^2+((2*Mars.mu)*((1/sim_params.r_des)-(1/r))));
+        gamma_ref = asin((1/2)*B*Atm.hs*((sim_params.rho_des - rho) ./ log(1 + dv_aero/v)));
+        
+        k = (Pdyn * Vehicle.S * CL) / (v * Vehicle.mass); % equivalent to g
+        theta_eq = gamma - (cos(gamma) * Vehicle.mass) / (Pdyn*Vehicle.S*CL) * (v^2/r - Mars.mu / r^2);
+        theta_cmd = theta_eq + (1/(sim_params.tau*k)) * (gamma_ref - gamma);
+        
+        % saturation
+        if (theta_cmd > deg2rad(60))
+            theta_cmd = deg2rad(60);
+        end
+        
+        Kp = sim_params.wn^2;
+        Kd = 2 * sim_params.zeta * sim_params.wn;
+        k = (Vehicle.CMdelta * Pdyn * Vehicle.S * Vehicle.d) / Vehicle.J;
+        delta_eq = (-Vehicle.CMalpha/Vehicle.CMdelta) * (theta - gamma) - (Vehicle.CMq * Vehicle.d * q) / (2 * v * Vehicle.CMdelta);
+        delta_cmd = delta_eq + Kp/k * (theta_cmd - theta) + Kd/k * (-q);
     else
         delta_cmd = 0;
     end
