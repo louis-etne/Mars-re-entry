@@ -18,3 +18,12 @@ octave-workspace
 
 # mat
 *.mat
+
+
+# LaTeX
+report/*.aux
+report/*.log
+report/*.pdf
+report/*.synctex.gz
+report/*.toc
+report/_minted-CHANDON_ETIENNE_AUDET_SP424_MARS/
