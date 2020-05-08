@@ -11,10 +11,13 @@ load('constants.mat');
 coefs.CA = load('fit_areo_axial_coef.mat');
 coefs.CN = load('fit_areo_norm_coef.mat');
 
+coeff_orbit_entry = load('orbit.mat');
+
+
 %% Initial conditions
-v_ini = 3627.7; %  m/s - Initial velocity at h_ini
-gamma_ini = deg2rad(-20.5); % rad - Angle between horizontal plane and the velocity vector - Initial flight path angle
-h_ini = 60000; % m - Initial altitude
+v_ini = coeff_orbit_entry.V_entry; %  m/s - Initial velocity at h_ini
+gamma_ini = coeff_orbit_entry.flight_path_angle; % rad - Angle between horizontal plane and the velocity vector - Initial flight path angle
+h_ini = 120000; % m - Initial altitude
 phi_ini = deg2rad(0.0); % rad - Downrange
 theta_ini = deg2rad(-80); % rad - Angle between horizontal and the capsule axis
 q_ini = deg2rad(0.0); % rad/s - Angular speed between horizontal and the capsule axis 
