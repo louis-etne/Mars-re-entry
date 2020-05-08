@@ -16,7 +16,7 @@ load('constants.mat', 'Mars', 'Orbit', 'Vehicle');
 % speed departure orbit
 V_departure_orbit = sqrt(2 * (-Mars.mu / (2 * Orbit.radius) + Mars.mu / Orbit.radius));
 
-r_p = Mars.radius + 60; % km - altitude of transfer orbit periapsis
+r_p = Mars.radius + 120; % km - altitude of transfer orbit periapsis
 a_i = Orbit.radius;      % km - semi-major axis of initial orbit
 e_i = 0;                 % eccentricity of initial orbit
 
@@ -51,4 +51,6 @@ mass_afterBurn = Vehicle.mass - Vehicle.MassFlow * burnTime;                % kg
 
 flight_path_angle = atan2(1 + e_t * sind(180), 1 + e_t * cosd(180)); 
 fprintf('flight path angle = %.2f°', rad2deg(flight_path_angle));
+Vp_t = Vp_t * 1e3;   % we need the value in m/s
+save('Data/orbit.mat', 'Vp_t', 'flight_path_angle');
 
