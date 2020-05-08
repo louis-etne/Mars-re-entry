@@ -1,7 +1,7 @@
 function [Orbit_ECI] = Orbites(a_m, e, M_deg, i_deg)
-
-mu = 3.98618e14;
-ID = 25544;
+% addpath('../Data');
+load('constants.mat', 'Mars');
+mu = Mars.mu;
 %% *Orbital Plane Coordinates*
 
 n_rad_per_s = sqrt(mu/a_m^3);  % [rad/s] mean motion
@@ -15,7 +15,7 @@ while (abs(dE) > eps)
     E_rad = E_rad -  dE;
 end
 
-E_deg_epoch = rad2deg(E_rad); 
+E_deg_epoch = rad2deg(E_rad);
 Omega_deg = 0;
 %% *Rotate To ECI*
 Rz_Omega = [ ...
