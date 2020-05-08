@@ -36,7 +36,7 @@ sim_params.tau = 0.2;
 sim_params.zeta = 0.7;
 sim_params.wn = 20;
 
-sim_params.controlled = true;
+sim_params.controlled = false;
 ts = [0 300]; % s - Time span, [t0 tf]
 
 %% Simulation
@@ -58,20 +58,20 @@ save('Data/flight.mat', 't', 'x', 'v', 'gamma', 'h', 'phi', 'theta', 'q');
 
 %% Simulation Computations
 alpha = theta - gamma;
-mach = MachNumber(v, h, Atm);
+M = MachNumber(v, h, Atm);
 rho = Density(h, Atm); % kg/m^3 - Air density at h
 Pdyn = (1/2) .* rho .* v.^2; % Dynamic pressure
 
 CA = [];
 CN = [];
 
-for i = 1:size(mach)
-    CA = [CA; AxialForceCoef(mach(i), alpha(i), coefs.CA)];
-    CN = [CN; NormalForceCoef(mach(i), alpha(i), coefs.CN)];
+for i = 1:size(M)
+    CA = [CA; AxialForceCoef(M(i), alpha(i), coefs.CA)];
+    CN = [CN; NormalForceCoef(M(i), alpha(i), coefs.CN)];
 end
 
-CL = -CA .* sin(alpha) + CN .* cos(alpha);
-CD = CA .* cos(alpha) + CN .* sin(alpha);
+CL = CN;
+CD = CA;
 
 Daero = Pdyn .* Vehicle.S .* CD;
 Laero = Pdyn .* Vehicle.S .* CL .* alpha;
@@ -105,6 +105,7 @@ set(ax, 'XDir', 'reverse');
 
 figure;
 hold on;
+grid on;
 plot(t, CL);
 plot(t, CD);
 legend('Lift coefficient', 'Drag coefficient');
@@ -114,10 +115,20 @@ ylabel('Aerodynamic coefficients');
 
 figure;
 hold on;
+grid on;
 plot(t, Laero);
 plot(t, Daero);
 legend('Lift', 'Drag');
-title('D_aero and L_aero versus time');
+title('D_{aero} and L_{aero} versus time');
 xlabel('Time (s)');
 ylabel('Aerodynamic forces');
 
+figure;
+hold on;
+grid on;
+plot(t, rad2deg(alpha));
+plot(t, rad2deg(theta));
+legend('\alpha', '\theta');
+title('\alpha and \theta versus time');
+xlabel('Time (s)');
+ylabel('Angles (deg)');

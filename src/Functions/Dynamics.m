@@ -23,8 +23,8 @@ function f = Dynamics(t, y, Mars, Atm, Vehicle, aero_coefs, sim_params)
     CA = AxialForceCoef(M, alpha, aero_coefs.CA);
     CN = NormalForceCoef(M, alpha, aero_coefs.CN);
     
-    CL = -CA * sin(alpha) + CN * cos(alpha);
-    CD = CA * cos(alpha) + CN * sin(alpha);
+    CL = CN;
+    CD = CA;
     
     if (sim_params.controlled)
         B = CD * Vehicle.S / Vehicle.mass;
