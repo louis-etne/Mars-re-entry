@@ -24,15 +24,15 @@ q_ini = deg2rad(0.0); % rad/s - Angular speed between horizontal and the capsule
 xi = [v_ini, gamma_ini, h_ini, phi_ini, theta_ini, q_ini];
 
 %% Simulation parameters
-sim_params.parachute_at = 8000; % m - Open parachute at 8km
+sim_params.parachute_at = 3000; % m - Open parachute at 8km
 sim_params.parachute_mach = 1.8; % Max mach number for parachute
 sim_params.r_des = sim_params.parachute_at + Mars.radius * 1000;
 sim_params.v_des = sim_params.parachute_mach * SpeedOfSound(sim_params.parachute_at, Atm);
 sim_params.rho_des = Density(sim_params.parachute_at, Atm);
 
 % Controller parameters
-sim_params.tau = 0.2;
-sim_params.zeta = 0.7;
+sim_params.tau = 2;
+sim_params.zeta = 7;
 sim_params.wn = 20;
 
-sim_params.controlled = false;
+sim_params.controlled = true;
