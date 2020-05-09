@@ -14,11 +14,11 @@ function C_A = AxialForceCoef(M, alpha, coefs)
         elseif abs(alpha) <= 17.5 && abs(alpha) >= 12.5
             C_A = coefs.f_CA_a15.p1 * M + coefs.f_CA_a15.p2;
         elseif abs(alpha) <= 12.5 && abs(alpha) >= 8.5
-            C_A = coefs.f_CA_a15.p1 * M + coefs.f_CA_a15.p2;
+            C_A = coefs.f_CA_a10.p1 * M + coefs.f_CA_a10.p2;
         elseif abs(alpha) <= 8.5 && abs(alpha) >= 2.5
-            C_A = coefs.f_CA_a15.p1 * M + coefs.f_CA_a15.p2;
+            C_A = coefs.f_CA_a5.p1 * M + coefs.f_CA_a5.p2;
         else
-            C_A = coefs.f_CA_a15.p1 * M + coefs.f_CA_a15.p2;
+            C_A = coefs.f_CA_a0.p1 * M + coefs.f_CA_a0.p2;
         end
     end
 end

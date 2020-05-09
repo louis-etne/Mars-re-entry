@@ -48,10 +48,10 @@ a5 = [1.04 1.09 1.18 1.21 1.32 1.32];
 a0 = [1.04 1.09 1.16 1.2 1.3 1.31];
 
 f_CA_a20 = fit(transpose(M), transpose(a20), 'poly1');
-f_CA_a15 = fit(transpose(M), transpose(a20), 'poly1');
-f_CA_a10 = fit(transpose(M), transpose(a20), 'poly1');
-f_CA_a5 = fit(transpose(M), transpose(a20), 'poly1');
-f_CA_a0 = fit(transpose(M), transpose(a20), 'poly1');
+f_CA_a15 = fit(transpose(M), transpose(a15), 'poly1');
+f_CA_a10 = fit(transpose(M), transpose(a10), 'poly1');
+f_CA_a5 = fit(transpose(M), transpose(a5), 'poly1');
+f_CA_a0 = fit(transpose(M), transpose(a0), 'poly1');
 
 addpath('Data');
 save('Data/fit_areo_axial_coef.mat', 'f_CA_6_10', 'f_CA_2', ...
