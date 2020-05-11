@@ -4,7 +4,6 @@ addpath('Data');
 addpath('Functions');
 
 load('orbit.mat');
-load('flight.mat');
 load('fit_temp.mat');
 load('constants.mat');
 
