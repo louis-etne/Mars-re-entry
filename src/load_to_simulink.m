@@ -14,7 +14,7 @@ aero_coefs.CN = load('fit_areo_norm_coef.mat');
 
 %% Initial conditions
 v_ini = V_entry; %  m/s - Initial velocity at h_ini
-gamma_ini = -flight_path_angle; % rad - Angle between horizontal plane and the velocity vector - Initial flight path angle
+gamma_ini = flight_path_angle; % rad - Angle between horizontal plane and the velocity vector - Initial flight path angle
 h_ini = 120000; % m - Initial altitude
 phi_ini = deg2rad(0.0); % rad - Downrange
 theta_ini = deg2rad(-80); % rad - Angle between horizontal and the capsule axis
