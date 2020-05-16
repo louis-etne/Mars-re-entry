@@ -16,6 +16,8 @@ Vehicle.CL = 0.8;
 Vehicle.CMalpha = -0.07;
 Vehicle.CMq = -0.05;
 Vehicle.CMdelta = 0.10;
+Vehicle.r_n = 0.381; % meters - nose radius
+
 
 Vehicle.Parachute.CD = 1.75;
 Vehicle.Parachute.D = 40;
