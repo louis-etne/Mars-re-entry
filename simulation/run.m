@@ -36,9 +36,15 @@ Atm.R = Physics.R / Atm.mean_molar_mass;
 % Simulation parameters
 params.parachute.at = 4000;
 
-params.retro_rocket.at = 100; % meters
-params.retro_rocket.force = 100; % Newton
-
+params.retro_rocket.at = 1000; % meters
+params.retro_rocket.thrust = 400; % Newton
+params.retro_rocket.exhaust_velocity = 3000;   % meters/seconds
+params.retro_rocket.fuel = 50;   % kg
+params.retro_rocket.flow_rate = params.retro_rocket.thrust /...
+                                params.retro_rocket.exhaust_velocity; %kg/s
+params.retro_rocket.burn_duration = params.retro_rocket.fuel /...
+                                    params.retro_rocket.flow_rate;    % s
+                            
 params.r_des = params.parachute.at + Mars.radius;
 params.v_des = 200;
 params.rho_des = Atm.rho0*exp(-params.parachute.at/Atm.hs);
@@ -54,8 +60,9 @@ h_ini = 120000;
 phi_ini = deg2rad(0.0);
 theta_ini = deg2rad(-80);
 q_ini = deg2rad(0.0);
-
-xi = [v_ini, gamma_ini, h_ini, phi_ini, theta_ini, q_ini];
+m_ini = Vehicle.mass;
+m_decrement_ini = 0;
+xi = [v_ini, gamma_ini, h_ini, phi_ini, theta_ini, q_ini, m_ini, m_decrement_ini];
 
 %% Simulation
 output = sim("model.slx", "RelTol", "1e-6", "StartTime", "0", "StopTime", "1000");
