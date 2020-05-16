@@ -7,7 +7,8 @@ clc;
 Physics.R = 8.31446261815324;
 
 % Vehicle data
-Vehicle.mass = 1500;
+Vehicle.fuel = 40;
+Vehicle.mass = 1460;
 Vehicle.J = 9.28951e+02;
 Vehicle.S = 8.498096887876168;
 Vehicle.d = 0.05;
@@ -36,10 +37,10 @@ Atm.R = Physics.R / Atm.mean_molar_mass;
 % Simulation parameters
 params.parachute.at = 4000;
 
-params.retro_rocket.at = 1000; % meters
-params.retro_rocket.thrust = 400; % Newton
+params.retro_rocket.at = 500; % meters
+params.retro_rocket.thrust = 1945; % Newton
 params.retro_rocket.exhaust_velocity = 3000;   % meters/seconds
-params.retro_rocket.fuel = 50;   % kg
+params.retro_rocket.fuel = Vehicle.fuel;   % kg
 params.retro_rocket.flow_rate = params.retro_rocket.thrust /...
                                 params.retro_rocket.exhaust_velocity; %kg/s
 params.retro_rocket.burn_duration = params.retro_rocket.fuel /...
@@ -61,11 +62,10 @@ phi_ini = deg2rad(0.0);
 theta_ini = deg2rad(-80);
 q_ini = deg2rad(0.0);
 m_ini = Vehicle.mass;
-m_decrement_ini = 0;
-xi = [v_ini, gamma_ini, h_ini, phi_ini, theta_ini, q_ini, m_ini, m_decrement_ini];
+xi = [v_ini, gamma_ini, h_ini, phi_ini, theta_ini, q_ini, Vehicle.fuel];
 
 %% Simulation
-output = sim("model.slx", "RelTol", "1e-6", "StartTime", "0", "StopTime", "1000");
+output = sim("model.slx", "RelTol", "1e-6", "StartTime", "0", "StopTime", "434");
 
 %% Assignation
 t = output.v.time;
@@ -75,10 +75,11 @@ h = output.h.data;
 phi = output.phi.data;
 theta = output.theta.data;
 q = output.q.data;
-
+mass = output.mass.data;
+mass_capsule = output.mass_capsule.data;
 %% Intermediate calculations
 r = h + Mars.radius;
-g = Mars.mu / r.^2; % m/s^2 - Gravitationnal acceleration at r
+g = Mars.mu ./ r.^2; % m/s^2 - Gravitationnal acceleration at r
 rho =  Atm.rho0 * exp(-h/Atm.hs);
 Pdyn = (1/2) .* rho .* v.^2; % Dynamic p ressure
 alpha = theta - gamma;
@@ -174,5 +175,13 @@ plot(h, M);
 title("Mach number function of altitude");
 xlabel("Altitude");
 ylabel("Mach number (m)");
+set(gca,'Xdir','reverse');
+grid on;
+
+figure;
+plot(mass_capsule, h);
+title("Capsule mass function of altitude");
+xlabel("Mass");
+ylabel("Altitude");
 set(gca,'Xdir','reverse');
 grid on;
