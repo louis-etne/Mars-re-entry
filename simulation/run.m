@@ -23,8 +23,8 @@ Vehicle.Parachute.S =  4 * pi * Vehicle.Parachute.D^2 / 8;
 
 % Additional masses
 Vehicle.Parachute.mass = 62;
-Vehicle.Heatshield.mass = 400;
-Vehicle.propellant = 93;
+Vehicle.Heatshield.mass = 500;
+Vehicle.propellant = 90;
 
 % Mars data
 Mars.radius = 3397e3;
@@ -40,14 +40,14 @@ Atm.R = Physics.R / Atm.mean_molar_mass;
 % Simulation parameters
 params.parachute.at = 4000;
 
-params.retro_rocket.at = 300; % meters
-params.retro_rocket.thrust = 3870; % Newton
-params.retro_rocket.exhaust_velocity = 2100;   % meters/seconds
-params.retro_rocket.propellant = Vehicle.propellant;   % kg
-params.retro_rocket.flow_rate = params.retro_rocket.thrust /...
-                                params.retro_rocket.exhaust_velocity; %kg/s
-params.retro_rocket.burn_duration = params.retro_rocket.propellant /...
-                                    params.retro_rocket.flow_rate;    % s
+params.retro_rockets.at = 150; % meters
+params.retro_rockets.max_thrust = 1290*3; % Newton
+params.retro_rockets.exhaust_velocity = 3000;   % meters/seconds
+params.retro_rockets.propellant = Vehicle.propellant;   % kg
+params.retro_rockets.max_flow_rate = params.retro_rockets.max_thrust /...
+                                params.retro_rockets.exhaust_velocity; %kg/s
+params.retro_rockets.min_burn_duration = params.retro_rockets.propellant /...
+                                    params.retro_rockets.max_flow_rate;    % s
                             
 params.r_des = params.parachute.at + Mars.radius;
 params.v_des = 200;
@@ -66,10 +66,10 @@ theta_ini = deg2rad(-80);
 q_ini = deg2rad(0.0);
 m_ini = Vehicle.mass;
 consumed_prop_ini = 0;
-xi = [v_ini, gamma_ini, h_ini, phi_ini, theta_ini, q_ini, consumed_prop_ini];
+xi = [v_ini, gamma_ini, h_ini, phi_ini, theta_ini, q_ini, consumed_prop_ini, params.retro_rockets.max_thrust];
 
 %% Simulation
-output = sim("model.slx", "RelTol", "1e-6", "StartTime", "0", "StopTime", "554");
+output = sim("model.slx", "RelTol", "1e-6", "StartTime", "0", "StopTime", "800");
 
 %% Assignation
 t = output.v.time;
