@@ -47,7 +47,7 @@ Vehicle.Thrust = 400;   % N
 Vehicle.Isp = 3000;     % m/s
 Vehicle.MassFlow = Vehicle.Thrust / Vehicle.Isp; % kg/s
 
-Vehicle.Parachute.CD = 1.17; % Drag coefficient
+Vehicle.Parachute.CD = 1.75; % Drag coefficient
 Vehicle.Parachute.D = 40; % m - Parachute diameter
 Vehicle.Parachute.S =  4 * pi * Vehicle.Parachute.D^2 / 8; % m^2 - Surface area
 

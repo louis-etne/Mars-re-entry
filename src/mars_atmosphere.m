@@ -19,7 +19,9 @@ t2 = [149.4, 159.7, 170, 245.1, 288.6];
 T = [t1 t2];
 
 plot(T, h);
-
+xlabel('Temperature in Kelvin');
+ylabel('Altitude in meters');
+title('Temperature function of the altitude');
 %% Fits models model
 
 %from 0 to 10 : 
@@ -36,7 +38,9 @@ figure();
 plot(h_0_10, T_0_10);
 hold on;
 plot(h_test, t_test);
-
+xlabel('Temperature in Kelvin');
+ylabel('Altitude in meters');
+title('Temperature function of the altitude');
 % from 10 to 70 : 
 T_10_70 = t1(6 : 36);
 h_10_70 = (10:2:70) * 1e3;
@@ -50,7 +54,9 @@ figure();
 plot(h_10_70, T_10_70);
 hold on;
 plot(h_test, t_test);
- 
+xlabel('Temperature in Kelvin');
+ylabel('Altitude in meters');
+title('Temperature function of the altitude');
 % from 70 to 100 : line at 139
 
 %from 100 to 150
@@ -66,7 +72,9 @@ figure();
 plot(h2, t2);
 hold on;
 plot(h_test_100_150, t_test_100_150);
-
+xlabel('Temperature in Kelvin');
+ylabel('Altitude in meters');
+title('Temperature function of the altitude');
 save('Data\fit_temp', 'f_0_10', 'f_10_70', 'f_100_150');
 
 % compare all;
@@ -76,3 +84,13 @@ figure();
 plot(T, h);
 hold on;
 plot(Temperature(h), h);
+xlabel('Temperature in Kelvin');
+ylabel('Altitude in meters');
+title('Temperature function of the altitude');
+
+load('.\Data\constants.mat')
+figure();
+plot(Density(h, Atm), h);
+xlabel('Density');
+ylabel('Altitude in meters');
+title('Density function of the altitude');
