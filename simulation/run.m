@@ -7,8 +7,7 @@ clc;
 Physics.R = 8.31446261815324;
 
 % Vehicle data
-Vehicle.fuel = 40;
-Vehicle.mass = 1460;
+Vehicle.mass = 1500;
 Vehicle.J = 9.28951e+02;
 Vehicle.S = 8.498096887876168;
 Vehicle.d = 0.05;
@@ -18,10 +17,14 @@ Vehicle.CMalpha = -0.07;
 Vehicle.CMq = -0.05;
 Vehicle.CMdelta = 0.10;
 
-Vehicle.Parachute.CD = 1.17;
+Vehicle.Parachute.CD = 1.75;
 Vehicle.Parachute.D = 40;
 Vehicle.Parachute.S =  4 * pi * Vehicle.Parachute.D^2 / 8;
-Vehicle.Parachute.mass = 0;
+
+% Additional masses
+Vehicle.Parachute.mass = 62;
+Vehicle.Heatshield.mass = 400;
+Vehicle.propellant = 93;
 
 % Mars data
 Mars.radius = 3397e3;
@@ -37,13 +40,13 @@ Atm.R = Physics.R / Atm.mean_molar_mass;
 % Simulation parameters
 params.parachute.at = 4000;
 
-params.retro_rocket.at = 500; % meters
-params.retro_rocket.thrust = 1945; % Newton
-params.retro_rocket.exhaust_velocity = 3000;   % meters/seconds
-params.retro_rocket.fuel = Vehicle.fuel;   % kg
+params.retro_rocket.at = 300; % meters
+params.retro_rocket.thrust = 3870; % Newton
+params.retro_rocket.exhaust_velocity = 2100;   % meters/seconds
+params.retro_rocket.propellant = Vehicle.propellant;   % kg
 params.retro_rocket.flow_rate = params.retro_rocket.thrust /...
                                 params.retro_rocket.exhaust_velocity; %kg/s
-params.retro_rocket.burn_duration = params.retro_rocket.fuel /...
+params.retro_rocket.burn_duration = params.retro_rocket.propellant /...
                                     params.retro_rocket.flow_rate;    % s
                             
 params.r_des = params.parachute.at + Mars.radius;
@@ -62,10 +65,11 @@ phi_ini = deg2rad(0.0);
 theta_ini = deg2rad(-80);
 q_ini = deg2rad(0.0);
 m_ini = Vehicle.mass;
-xi = [v_ini, gamma_ini, h_ini, phi_ini, theta_ini, q_ini, Vehicle.fuel];
+consumed_prop_ini = 0;
+xi = [v_ini, gamma_ini, h_ini, phi_ini, theta_ini, q_ini, consumed_prop_ini];
 
 %% Simulation
-output = sim("model.slx", "RelTol", "1e-6", "StartTime", "0", "StopTime", "434");
+output = sim("model.slx", "RelTol", "1e-6", "StartTime", "0", "StopTime", "554");
 
 %% Assignation
 t = output.v.time;
