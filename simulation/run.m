@@ -81,7 +81,7 @@ gamma_ref = zeros(size(t));
 
 if (params.controlled)
     for i = 1:size(gamma_ref)
-        if (h(i) > params.parachute_at)
+        if (h(i) > params.parachute.at)
             B = (Vehicle.S .* Vehicle.CD) ./ (Vehicle.mass);
             dv_aero = params.v_des - sqrt(v(i).^2+((2.*Mars.mu).*((1./params.r_des)-(1./r(i)))));
             gamma_ref(i) = asin((1/2).*B.*Atm.hs.*((params.rho_des - rho(i)) ./ log(1 + dv_aero./v(i))));
