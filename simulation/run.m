@@ -83,6 +83,13 @@ theta = output.theta.data;
 q = output.q.data;
 mass = output.mass.data;
 mass_capsule = output.mass_capsule.data;
+heatflux = output.heatflux.data;
+integrated_heatflux = output.integrated_heatflux.data;
+
+%% Heatshield mass
+peak_heatflux = max(heatflux);
+heatshield_specific_mass = 0.24*peak_heatflux+0.29*sqrt(peak_heatflux)+11.3;
+
 %% Intermediate calculations
 r = h + Mars.radius;
 g = Mars.mu ./ r.^2; % m/s^2 - Gravitationnal acceleration at r
@@ -190,4 +197,18 @@ title("Capsule mass function of altitude");
 xlabel("Mass");
 ylabel("Altitude");
 set(gca,'Xdir','reverse');
+grid on;
+
+figure;
+subplot(2, 1, 1);
+plot(t, heatflux);
+title("Heatflux function of time")
+xlabel("Time (s)");
+ylabel("Heatflux (kW/m^2)")
+grid on;
+subplot(2, 1, 2);
+plot(t, integrated_heatflux);
+title("Integrated heatflux function of time")
+xlabel("Time (s)");
+ylabel("Heatflux (kW/m^2)")
 grid on;
