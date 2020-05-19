@@ -16,11 +16,16 @@ Vehicle.CL = 0.8;
 Vehicle.CMalpha = -0.07;
 Vehicle.CMq = -0.05;
 Vehicle.CMdelta = 0.10;
+Vehicle.r_n = 0.381; % meters - nose radius
 
 Vehicle.Parachute.CD = 1.75;
 Vehicle.Parachute.D = 40;
 Vehicle.Parachute.S =  4 * pi * Vehicle.Parachute.D^2 / 8;
-Vehicle.Parachute.mass = 0;
+
+% Additional masses
+Vehicle.Parachute.mass = 62;
+Vehicle.Heatshield.mass = 500;
+Vehicle.propellant = 90;
 
 % Mars data
 Mars.radius = 3397e3;
@@ -36,9 +41,15 @@ Atm.R = Physics.R / Atm.mean_molar_mass;
 % Simulation parameters
 params.parachute.at = 4000;
 
-params.retro_rocket.at = 100; % meters
-params.retro_rocket.force = 100; % Newton
-
+params.retro_rockets.at = 150; % meters
+params.retro_rockets.max_thrust = 1290*3; % Newton
+params.retro_rockets.exhaust_velocity = 3000;   % meters/seconds
+params.retro_rockets.propellant = Vehicle.propellant;   % kg
+params.retro_rockets.max_flow_rate = params.retro_rockets.max_thrust /...
+                                params.retro_rockets.exhaust_velocity; %kg/s
+params.retro_rockets.min_burn_duration = params.retro_rockets.propellant /...
+                                    params.retro_rockets.max_flow_rate;    % s
+                            
 params.r_des = params.parachute.at + Mars.radius;
 params.v_des = 200;
 params.rho_des = Atm.rho0*exp(-params.parachute.at/Atm.hs);
@@ -54,11 +65,12 @@ h_ini = 120000;
 phi_ini = deg2rad(0.0);
 theta_ini = deg2rad(-80);
 q_ini = deg2rad(0.0);
-
-xi = [v_ini, gamma_ini, h_ini, phi_ini, theta_ini, q_ini];
+m_ini = Vehicle.mass;
+consumed_prop_ini = 0;
+xi = [v_ini, gamma_ini, h_ini, phi_ini, theta_ini, q_ini, consumed_prop_ini, params.retro_rockets.max_thrust];
 
 %% Simulation
-output = sim("model.slx", "RelTol", "1e-6", "StartTime", "0", "StopTime", "1000");
+output = sim("model.slx", "RelTol", "1e-6", "StartTime", "0", "StopTime", "800");
 
 %% Assignation
 t = output.v.time;
@@ -68,6 +80,14 @@ h = output.h.data;
 phi = output.phi.data;
 theta = output.theta.data;
 q = output.q.data;
+mass = output.mass.data;
+mass_capsule = output.mass_capsule.data;
+heatflux = output.heatflux.data;
+integrated_heatflux = output.integrated_heatflux.data;
+
+%% Heatshield mass
+peak_heatflux = max(heatflux);
+heatshield_specific_mass = 0.24*peak_heatflux+0.29*sqrt(peak_heatflux)+11.3;
 
 %% Intermediate calculations
 r = h + Mars.radius;
@@ -168,4 +188,26 @@ title("Mach number function of altitude");
 xlabel("Altitude");
 ylabel("Mach number (m)");
 set(gca,'Xdir','reverse');
+grid on;
+
+figure;
+plot(mass_capsule, h);
+title("Capsule mass function of altitude");
+xlabel("Mass");
+ylabel("Altitude");
+set(gca,'Xdir','reverse');
+grid on;
+
+figure;
+subplot(2, 1, 1);
+plot(t, heatflux);
+title("Heatflux function of time")
+xlabel("Time (s)");
+ylabel("Heatflux (kW/m^2)")
+grid on;
+subplot(2, 1, 2);
+plot(t, integrated_heatflux);
+title("Integrated heatflux function of time")
+xlabel("Time (s)");
+ylabel("Heatflux (kW/m^2)")
 grid on;
