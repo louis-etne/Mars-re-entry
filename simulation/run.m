@@ -17,7 +17,7 @@ Vehicle.CMalpha = -0.07;
 Vehicle.CMq = -0.05;
 Vehicle.CMdelta = 0.10;
 
-Vehicle.Parachute.CD = 1.17;
+Vehicle.Parachute.CD = 1.75;
 Vehicle.Parachute.D = 40;
 Vehicle.Parachute.S =  4 * pi * Vehicle.Parachute.D^2 / 8;
 Vehicle.Parachute.mass = 0;
@@ -71,7 +71,7 @@ q = output.q.data;
 
 %% Intermediate calculations
 r = h + Mars.radius;
-g = Mars.mu / r.^2; % m/s^2 - Gravitationnal acceleration at r
+g = Mars.mu ./ r.^2; % m/s^2 - Gravitationnal acceleration at r
 rho =  Atm.rho0 * exp(-h/Atm.hs);
 Pdyn = (1/2) .* rho .* v.^2; % Dynamic p ressure
 alpha = theta - gamma;
