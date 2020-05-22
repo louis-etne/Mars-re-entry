@@ -1,4 +1,4 @@
-function [xx,yy,zz] = MarsSphere(varargin)
+clc,clear, close all;
 load('data/constants.mat', 'Mars')
 %EARTH_SPHERE Generate an earth-sized sphere.
 %   [X,Y,Z] = EARTH_SPHERE(N) generates three (N+1)-by-(N+1)
@@ -34,23 +34,23 @@ load('data/constants.mat', 'Mars')
 %   Will Campbell, 3-30-2010
 %   Copyright 1984-2010 The MathWorks, Inc. 
 %% Input Handling
-[cax,args,nargs] = axescheck(varargin{:}); % Parse possible Axes input
-error(nargchk(0,2,nargs)); % Ensure there are a valid number of inputs
+% [cax,args,nargs] = axescheck(varargin{:}); % Parse possible Axes input
+% error(nargchk(0,2,nargs)); % Ensure there are a valid number of inputs
 % Handle remaining inputs.
 % Should have 0 or 1 string input, 0 or 1 numeric input
 j = 0;
 k = 0;
 n = 50; % default value
 units = 'km'; % default value
-for i = 1:nargs
-    if ischar(args{i})
-        units = args{i};
-        j = j+1;
-    elseif isnumeric(args{i})
-        n = args{i};
-        k = k+1;
-    end
-end
+% for i = 1:nargs
+%     if ischar(args{i})
+%         units = args{i};
+%         j = j+1;
+%     elseif isnumeric(args{i})
+%         n = args{i};
+%         k = k+1;
+%     end
+% end
 if j > 1 || k > 1
     error('Invalid input types')
 end
@@ -75,8 +75,9 @@ x = myscale*cosphi*cos(theta);
 y = myscale*cosphi*sintheta;
 z = myscale*sin(phi)*ones(1,n+1);
 %% Plotting
-    cax = newplot(cax);
+%     cax = newplot(cax);
     % Load and define topographic data
+%     figure('units','normalized','outerposition',[0 0 1 1])
     load('topo.mat','topo','topomap1');
     % Rotate data to be consistent with the Earth-Centered-Earth-Fixed
     % coordinate conventions. X axis goes through the prime meridian.
@@ -85,27 +86,58 @@ z = myscale*sin(phi)*ones(1,n+1);
     % Note that if you plot orbit trajectories in the Earth-Centered-
     % Inertial, the orientation of the contintents will be misleading.
     topo2 = [topo(:,181:360) topo(:,1:180)]; %# ok<NODEF>
-    mars_texture = imread('./Data/8k_mars.jpg');
+    mars_texture = imread('./Data/2k_mars.jpg');
     % Define surface settings
     props.Cdata = mars_texture;
     props.FaceColor= 'texturemap';
     props.EdgeColor = 'none';
     props.FaceLighting = 'phong';
     % Create the sphere with Earth topography and adjust colormap
-    surface(x,y,z,props,'parent',cax)
+%     surface(x,y,z,props,'parent',gca)
     colormap(topomap1)
-% Replace the calls to surface and colormap with these lines if you do 
-% not want the Earth's topography displayed.
-%     surf(x,y,z,'parent',cax)
-%     shading flat
-%     colormap gray
     
-    % Refine figure
+%     axlen = Mars.radius*1.2;
+%     axis([-axlen, axlen, -axlen, axlen, -axlen, axlen])
     axis equal
     xlabel(['X [' units ']'])
     ylabel(['Y [' units ']'])
     zlabel(['Z [' units ']'])
-    view(127.5,30)
 
     xx = x; yy = y; zz = z;
-end
+
+    ax = gca;
+    ax.Clipping = 'off';
+    hold on
+    % h = surf(X,Y,Z);
+    % set(h,'EdgeColor','r')
+    % set(h,'FaceCOlor', 'b');
+    % alpha(h, 1)
+%     t = 45;
+%     st1 = sind( t*sind(t) );
+%     ct1 = cosd( t*sind(t) );
+    view(127.5,30)
+    pause(1);
+    for t = linspace(0,0.1,1000)
+            % ----------    PLAY WITH THIS
+%         st1 = sind(sind(t) );
+%         ct1 = cosd(sind(t) );
+        st3 = sind(t);
+        ct3 = cosd(t);
+            % ------------
+        Rx = [1 0 0; 0 1 0; 0 0 1];    % rotation matrix around X axis
+        Rz = [ct3 -st3 0; st3 ct3 0; 0 0 1];    % rotation matrix around Z axis
+        V = Rx*[x(:) y(:) z(:)]';               % rotate data
+        V = Rz*V;
+        x = reshape(V(1,:),size(x));
+        y = reshape(V(2,:),size(y));
+        z = reshape(V(3,:),size(z));
+        h = surface(x, y, z, props,'parent',gca);
+        pause(0.005)
+        if t ~= 0.1
+            delete(h)
+        end
+    end
+
+
+
+
