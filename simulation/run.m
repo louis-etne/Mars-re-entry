@@ -24,9 +24,12 @@ Vehicle.Parachute.S =  4 * pi * Vehicle.Parachute.D^2 / 8;
 
 % Additional masses
 Vehicle.Parachute.mass = 62;
-Vehicle.Heatshield.mass = 500;
 Vehicle.propellant = 90;
-
+Vehicle.Heatshield.surface = 23.226; % m^2
+% calculated after running a first simulation. 14.8201 is the specific
+% mass of the heatshield
+Vehicle.Heatshield.mass = Vehicle.Heatshield.surface * 14.8201; 
+                                                            
 % Mars data
 Mars.radius = 3397e3;
 Mars.mu = 42830e9;
@@ -42,7 +45,7 @@ Atm.R = Physics.R / Atm.mean_molar_mass;
 params.parachute.at = 4000;
 
 params.retro_rockets.at = 150; % meters
-params.retro_rockets.max_thrust = 1290*3; % Newton
+params.retro_rockets.max_thrust = 1500*3; % Newton
 params.retro_rockets.exhaust_velocity = 3000;   % meters/seconds
 params.retro_rockets.propellant = Vehicle.propellant;   % kg
 params.retro_rockets.max_flow_rate = params.retro_rockets.max_thrust /...
@@ -70,7 +73,7 @@ consumed_prop_ini = 0;
 xi = [v_ini, gamma_ini, h_ini, phi_ini, theta_ini, q_ini, consumed_prop_ini, params.retro_rockets.max_thrust];
 
 %% Simulation
-output = sim("model.slx", "RelTol", "1e-6", "StartTime", "0", "StopTime", "800");
+output = sim("model.slx", "RelTol", "1e-6", "StartTime", "0");
 
 %% Assignation
 t = output.v.time;
@@ -84,11 +87,19 @@ mass = output.mass.data;
 mass_capsule = output.mass_capsule.data;
 heatflux = output.heatflux.data;
 integrated_heatflux = output.integrated_heatflux.data;
-
 %% Heatshield mass
-peak_heatflux = max(heatflux);
+peak_heatflux = max(integrated_heatflux);
 heatshield_specific_mass = 0.24*peak_heatflux+0.29*sqrt(peak_heatflux)+11.3;
 
+ang_phi = 0:0.1:40;
+q_c = peak_heatflux.*cosd(ang_phi).^1.2;
+mass_h = 0;
+for i=q_c
+    mass_h = mass_h + 0.1*(0.24*i+0.29*sqrt(i)+11.3);
+end
+fun = @(x) (0.24 * (peak_heatflux.*cosd(x).^1.2) + 0.29 * sqrt(peak_heatflux.*cosd(x).^1.2)).*sin(x) + 11.3;
+
+m_tot = Vehicle.r_n * 2 * pi * integral(fun, 0, 20);
 %% Intermediate calculations
 r = h + Mars.radius;
 g = Mars.mu ./ r.^2; % m/s^2 - Gravitationnal acceleration at r
@@ -115,99 +126,137 @@ Daero = Pdyn .* Vehicle.S .* Vehicle.CD;
 Laero = Pdyn .* Vehicle.S .* Vehicle.CL .* alpha;
 
 %% Plotting
-figure;
-grid on;
-plot(t, h);
-xlabel("Time (s)");
-ylabel("Altitude (m)");
-title("Altitude function of time");
+% figure;
+% grid on;
+% plot(t, h);
+% xlabel("Time (s)");
+% ylabel("Altitude (m)");
+% title("Altitude function of time");
+% 
+% figure;
+% grid on;
+% plot(t, v);
+% xlabel("Time (s)");
+% ylabel("Velocity (m/s)");
+% title("Velocity function of time");
+% 
+% figure;
+% grid on;
+% plot(h, v);
+% xlabel("Altitude (m)");
+% ylabel("Velocity (m/s)");
+% title("Velocity function of altitude");
+% set(gca,'Xdir','reverse');
+% 
+% figure;
+% grid on;
+% hold on;
+% plot(t, Laero);
+% plot(t, Daero);
+% legend("Laero", "Daero");
+% xlabel("Time (s)");
+% ylabel("Aerodynamic forces");
+% title("L_{aero} and D_{aero} function of time");
+% 
+% figure;
+% grid on;
+% hold on;
+% plot(t, rad2deg(gamma));
+% plot(t, rad2deg(gamma_ref));
+% legend("\gamma", "\gamma_{ref}");
+% title("Flight path angle \gamma function of time");
+% xlabel("Time (s)");
+% ylabel("Flight path angle (deg)");
+% 
+% figure;
+% grid on;
+% plot(h, rad2deg(gamma));
+% title("Flight path angle \gamma function of altitude");
+% xlabel("Altitude (m)");
+% ylabel("Flight path angle (deg)");
+% set(gca,'Xdir','reverse');
+% 
+% figure;
+% grid on;
+% hold on;
+% plot(t, theta);
+% plot(t, alpha);
+% legend("\theta", "\alpha");
+% title("\alpha and \theta function of time");
+% xlabel("Time (s)");
+% ylabel("Angles (deg)");
+% 
+% figure;
+% plot(t, M);
+% title("Mach number function of time");
+% xlabel("Time (s)");
+% ylabel("Mach number");
+% grid on;
+% 
+% figure;
+% plot(h, M);
+% title("Mach number function of altitude");
+% xlabel("Altitude");
+% ylabel("Mach number (m)");
+% set(gca,'Xdir','reverse');
+% grid on;
+% 
+% figure;
+% plot(mass_capsule, h);
+% title("Capsule mass function of altitude");
+% xlabel("Mass");
+% ylabel("Altitude");
+% set(gca,'Xdir','reverse');
+% grid on;
+% 
+% figure;
+% subplot(2, 1, 1);
+% plot(t, heatflux);
+% title("Heatflux function of time")
+% xlabel("Time (s)");
+% ylabel("Heatflux (kW/m^2)")
+% grid on;
+% subplot(2, 1, 2);
+% plot(t, integrated_heatflux);
+% title("Integrated heatflux function of time")
+% xlabel("Time (s)");
+% ylabel("Heatflux (kWh/m^2)")
+% grid on;
+% axis([0, 800, 0, 12])
 
-figure;
-grid on;
-plot(t, v);
-xlabel("Time (s)");
-ylabel("Velocity (m/s)");
-title("Velocity function of time");
+%% AnimatedLine
+% lat = zeros(length(t));
+% lon = linspace(1, 2, length(t));
+% figure;
+% grid on;
+% ax = gca;
+% % axis([-1, 1, 1, 2, 0, 120e3]);
+% xlabel("Latitude (°)");
+% ylabel("Longitude (°)");
+% zlabel("Altitude (m)");
+% ax.Clipping = 'off';
+% title("Altitude function of time");
+% curve = animatedline('Color', 'r');
+% view(45, 45)
+% for i = 1:length(t)
+%    addpoints(curve, lat(i), lon(i), h(i));
+%    drawnow;
+% end
 
-figure;
-grid on;
-plot(h, v);
-xlabel("Altitude (m)");
-ylabel("Velocity (m/s)");
-title("Velocity function of altitude");
-set(gca,'Xdir','reverse');
-
-figure;
-grid on;
-hold on;
-plot(t, Laero);
-plot(t, Daero);
-legend("Laero", "Daero");
-xlabel("Time (s)");
-ylabel("Aerodynamic forces");
-title("L_{aero} and D_{aero} function of time");
-
-figure;
-grid on;
-hold on;
-plot(t, rad2deg(gamma));
-plot(t, rad2deg(gamma_ref));
-legend("\gamma", "\gamma_{ref}");
-title("Flight path angle \gamma function of time");
-xlabel("Time (s)");
-ylabel("Flight path angle (deg)");
-
-figure;
-grid on;
-plot(h, rad2deg(gamma));
-title("Flight path angle \gamma function of altitude");
-xlabel("Altitude (m)");
-ylabel("Flight path angle (deg)");
-set(gca,'Xdir','reverse');
-
-figure;
-grid on;
-hold on;
-plot(t, theta);
-plot(t, alpha);
-legend("\theta", "\alpha");
-title("\alpha and \theta function of time");
-xlabel("Time (s)");
-ylabel("Angles (deg)");
-
-figure;
-plot(t, M);
-title("Mach number function of time");
-xlabel("Time (s)");
-ylabel("Mach number");
-grid on;
-
-figure;
-plot(h, M);
-title("Mach number function of altitude");
-xlabel("Altitude");
-ylabel("Mach number (m)");
-set(gca,'Xdir','reverse');
-grid on;
-
-figure;
-plot(mass_capsule, h);
-title("Capsule mass function of altitude");
-xlabel("Mass");
-ylabel("Altitude");
-set(gca,'Xdir','reverse');
-grid on;
-
-figure;
-subplot(2, 1, 1);
-plot(t, heatflux);
-title("Heatflux function of time")
-xlabel("Time (s)");
-ylabel("Heatflux (kW/m^2)")
-grid on;
-subplot(2, 1, 2);
-plot(t, integrated_heatflux);
-title("Integrated heatflux function of time")
-xlabel("Time (s)");
-ylabel("Heatflux (kW/m^2)")
-grid on;
+%%
+alt = zeros(int16(0.1*length(h)), 1);
+downrange = zeros(length(alt), 1);
+time = zeros(length(alt), 1);
+i = 1;
+for j = 1:length(alt)
+    alt(j) = h(i);
+    downrange(j) = phi(i);
+    time(j) = t(i);
+    if i > 21139
+        i = i + 1;
+    else
+        i = i + 10;
+    end
+end
+% alt = h;
+save('../src/Data/altitude.mat', 'alt', 'downrange', 'time');

@@ -45,8 +45,7 @@ Vehicle.CMq = -0.05; % Damping coefficent
 Vehicle.CMdelta = 0.10; % High-lift device coefficient
 Vehicle.Thrust = 400;   % N
 Vehicle.Isp = 3000;     % m/s
-Vehicle.ExhaustVelocity = Vehicle.Isp * 9.81; % m/s
-Vehicle.MassFlow = Vehicle.Thrust / Vehicle.ExhaustVelocity; % kg/s
+Vehicle.MassFlow = Vehicle.Thrust / Vehicle.Isp; % kg/s
 
 Vehicle.Parachute.CD = 1.75; % Drag coefficient
 Vehicle.Parachute.D = 40; % m - Parachute diameter

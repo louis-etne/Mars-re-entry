@@ -7,8 +7,7 @@ addpath('Data');
 addpath('Functions');
 
 load('constants.mat', 'Mars', 'Orbit', 'Vehicle');
-
-
+load('altitude.mat', 'alt', 'downrange');
 %% Parameter of orbit around mars : 
 % HYPOTHESIS : 
 %   - circular orbit at 500 km altitude
@@ -34,6 +33,13 @@ V_entry = sqrt(Mars.mu * (2/r_entry - 1/a_t));
 InitialOrbit = Orbites(a_i*1e3, e_i, 0, 0)./1e3;     % divide by 1e3 because orbites fucntion returns values in meters
 TransferOrbit = Orbites(a_t*1e3, e_t, 0, 0)./1e3;
 
+
+lon = rad2deg(downrange) + rad2deg(theta_entry);
+lat = zeros(length(alt), 1);
+lat = lat + 1;
+alt = (alt./1e3 + Mars.radius);
+Pos = SphereToCartesian(alt, rad2deg(theta_entry), lat);
+T = SphereToCartesian(alt, lon, 90);
 figure('color','white');
 set(gcf, 'Position', [0 0 3840, 2160]);
 grid on;
@@ -42,8 +48,9 @@ hold on
 % plot3(InitialOrbit(361, 1), InitialOrbit(361, 2), InitialOrbit(361, 3), 'rx', 'LineWidth', 1.5)
 plot3(InitialOrbit(180:361, 1), InitialOrbit(180:361, 2), InitialOrbit(180:361, 3), '-b', 'LineWidth', 1.5)
 plot3(InitialOrbit(180, 1), InitialOrbit(180, 2), InitialOrbit(180, 3), 'go', 'Linewidth', 1.5)
-plot3(TransferOrbit(61, 1), TransferOrbit(61, 2), TransferOrbit(61, 3), 'rx', 'Linewidth', 2)
-plot3(TransferOrbit(1:181, 1), TransferOrbit(1:181, 2), TransferOrbit(1:181, 3), '-c', 'LineWidth', 1.5)
+plot3(TransferOrbit(60, 1), TransferOrbit(60, 2), TransferOrbit(60, 3), 'rx', 'Linewidth', 2)
+plot3(TransferOrbit(60:181, 1), TransferOrbit(60:181, 2), TransferOrbit(60:181, 3), '-c', 'LineWidth', 1.5)
+plot3(T(:, 1), T(:, 2), T(:, 3), '-y', 'LineWidth', 1.5)
 ax = gca;
 ax.Clipping = 'off';
 hold off
@@ -54,11 +61,13 @@ grid on;
 axis equal
 
 
-burnTime = Vehicle.mass/Vehicle.MassFlow * (1-exp(-abs(DeltaV)/Vehicle.ExhaustVelocity));    % s - duration of the deceleration burn
+burnTime = Vehicle.mass/Vehicle.MassFlow * (1-exp(-abs(DeltaV)/Vehicle.Isp));    % s - duration of the deceleration burn
 mass_afterBurn = Vehicle.mass - Vehicle.MassFlow * burnTime;                % kg - mass of Vehicle after burn
 
 flight_path_angle = atan2(1 + e_t * sin(theta_entry), 1 + e_t * cos(theta_entry));
-fprintf('flight path angle = %.4f°', rad2deg(flight_path_angle));
+fprintf('flight path angle = %.4f°\n', rad2deg(flight_path_angle));
 V_entry = V_entry * 1e3;   % we need the value in m/s
 save('Data/orbit.mat', 'V_entry', 'flight_path_angle');
+
+
 
