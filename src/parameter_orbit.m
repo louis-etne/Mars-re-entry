@@ -15,7 +15,7 @@ load('altitude.mat', 'alt', 'downrange');
 % speed departure orbit
 V_departure_orbit = sqrt(2 * (-Mars.mu / (2 * Orbit.radius) + Mars.mu / Orbit.radius));
 
-r_p = Mars.radius + 0;   % km - altitude of transfer orbit periapsis
+r_p = Mars.radius + 0 ;   % km - altitude of transfer orbit periapsis
 a_i = Orbit.radius;      % km - semi-major axis of initial orbit
 e_i = 0;                 % eccentricity of initial orbit
 
@@ -23,7 +23,7 @@ a_t = (Orbit.radius + r_p)/2;                        % km - sma of transfer orbi
 e_t = (Orbit.radius - r_p) / (Orbit.radius + r_p);   % eccentricity of transfer orbit
 Va_t = sqrt(Mars.mu * (2/Orbit.radius - 1/a_t));     % km/s velocity at apoapsis of transfer orbit
 Vp_t = sqrt(Mars.mu * (2/r_p - 1/a_t));              % km/s velocity at periapsis of transfer orbit
-DeltaV = Va_t - V_departure_orbit;
+DeltaV = Va_t - V_departure_orbit
 h = r_p * Vp_t;
 p = h^2 / Mars.mu;
 r_entry = Mars.radius + 120;
@@ -43,7 +43,7 @@ T = SphereToCartesian(alt, lon, 90);
 figure('color','white');
 set(gcf, 'Position', [0 0 3840, 2160]);
 grid on;
-MarsSphere(gcf, 'km')
+MarsSphere(gcf, 'km');
 hold on
 % plot3(InitialOrbit(361, 1), InitialOrbit(361, 2), InitialOrbit(361, 3), 'rx', 'LineWidth', 1.5)
 plot3(InitialOrbit(180:361, 1), InitialOrbit(180:361, 2), InitialOrbit(180:361, 3), '-b', 'LineWidth', 1.5)
@@ -61,10 +61,10 @@ grid on;
 axis equal
 
 
-burnTime = Vehicle.mass/Vehicle.MassFlow * (1-exp(-abs(DeltaV)/Vehicle.Isp));    % s - duration of the deceleration burn
+burnTime = Vehicle.mass/Vehicle.MassFlow * (1-exp(-abs(DeltaV*1000)/Vehicle.Isp))   % s - duration of the deceleration burn
 mass_afterBurn = Vehicle.mass - Vehicle.MassFlow * burnTime;                % kg - mass of Vehicle after burn
 
-flight_path_angle = atan2(1 + e_t * sin(theta_entry), 1 + e_t * cos(theta_entry));
+flight_path_angle = atan2(e_t * sin(theta_entry), 1 + e_t * cos(theta_entry));
 fprintf('flight path angle = %.4f°\n', rad2deg(flight_path_angle));
 V_entry = V_entry * 1e3;   % we need the value in m/s
 save('Data/orbit.mat', 'V_entry', 'flight_path_angle');

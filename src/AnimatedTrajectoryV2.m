@@ -125,7 +125,7 @@ z = myscale*sin(phi)*ones(1,n+1);
     i2 = index2;
     i3 = 1;
     for t = linspace(0,0.1,1000)
-            % ----------    PLAY WITH THIS
+        % ----------    PLAY WITH THIS
 %         st1 = sind(sind(t) );
 %         ct1 = cosd(sind(t) );
         st3 = sind(t);
