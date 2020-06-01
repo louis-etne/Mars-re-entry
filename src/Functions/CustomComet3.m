@@ -120,11 +120,11 @@ for i = 1:k
     if ~(isvalid(head) && isvalid(body))
         return
     end
-    axesHandlesToChildObjects = findobj(gca, 'Type', 'image');
-    if ~isempty(axesHandlesToChildObjects)
-        delete(axesHandlesToChildObjects);
-    end
-    imagesc([x_low(i) x_high(i)], [y_low(i) y_high(i)], custom_marker)
+%     axesHandlesToChildObjects = findobj(gca, 'Type', 'image');
+%     if ~isempty(axesHandlesToChildObjects)
+%         delete(axesHandlesToChildObjects);
+%     end
+%     imagesc([x_low(i) x_high(i)], [y_low(i) y_high(i)], custom_marker)
     set(head,'xdata',x(i),'ydata',y(i),'zdata',z(i))
     addpoints(body,x(i),y(i),z(i));
     pause(0.05)
@@ -142,11 +142,11 @@ for i = k+1:m
     if ~(isvalid(head) && isvalid(body) && isvalid(tail))
         return
     end
-    axesHandlesToChildObjects = findobj(gca, 'Type', 'image');
-    if ~isempty(axesHandlesToChildObjects)
-        delete(axesHandlesToChildObjects);
-    end
-    imagesc([x_low(i) x_high(i)], [y_low(i) y_high(i)], custom_marker)
+%     axesHandlesToChildObjects = findobj(gca, 'Type', 'image');
+%     if ~isempty(axesHandlesToChildObjects)
+%         delete(axesHandlesToChildObjects);
+%     end
+%     imagesc([x_low(i) x_high(i)], [y_low(i) y_high(i)], custom_marker)
     set(head,'xdata',x(i),'ydata',y(i),'zdata',z(i))
     addpoints(body,x(i),y(i),z(i));
     addpoints(tail,x(i-k),y(i-k),z(i-k));

@@ -83,16 +83,7 @@ x = myscale*cosphi*cos(theta);
 y = myscale*cosphi*sintheta;
 z = myscale*sin(phi)*ones(1,n+1);
 %% Plotting
-%     cax = newplot(cax);
-    % Load and define topographic data
-%     figure('units','normalized','outerposition',[0 0 1 1])
     load('topo.mat','topo','topomap1');
-    % Rotate data to be consistent with the Earth-Centered-Earth-Fixed
-    % coordinate conventions. X axis goes through the prime meridian.
-    % http://en.wikipedia.org/wiki/Geodetic_system#Earth_Centred_Earth_Fixed_.28ECEF_or_ECF.29_coordinates
-    %
-    % Note that if you plot orbit trajectories in the Earth-Centered-
-    % Inertial, the orientation of the contintents will be misleading.
     hold on
     topo2 = [topo(:,181:360) topo(:,1:180)]; %# ok<NODEF>
     mars_texture = imread('./Data/2k_mars.jpg');
@@ -106,8 +97,8 @@ z = myscale*sin(phi)*ones(1,n+1);
     colormap(topomap1)
     
     axlen = Mars.radius*1.2;
-    axis([-axlen, axlen, -axlen, axlen, -axlen, axlen])
-%     axis equal
+%     axis([-axlen, axlen, -axlen, axlen, -axlen, axlen])
+    axis equal
     xlabel(['X [' units ']'])
     ylabel(['Y [' units ']'])
     zlabel(['Z [' units ']'])
@@ -128,8 +119,8 @@ z = myscale*sin(phi)*ones(1,n+1);
         % ----------    PLAY WITH THIS
 %         st1 = sind(sind(t) );
 %         ct1 = cosd(sind(t) );
-        st3 = sind(t);
-        ct3 = cosd(t);
+        st3 = sind(0.5*t);
+        ct3 = cosd(0.5*t);
             % ------------
         Rx = [1 0 0; 0 1 0; 0 0 1];    % rotation matrix around X axis
         Rz = [ct3 -st3 0; st3 ct3 0; 0 0 1];    % rotation matrix around Z axis
@@ -183,7 +174,7 @@ hold on
 burnTime = Vehicle.mass/Vehicle.MassFlow * (1-exp(-abs(DeltaV)/Vehicle.Isp));    % s - duration of the deceleration burn
 mass_afterBurn = Vehicle.mass - Vehicle.MassFlow * burnTime;                % kg - mass of Vehicle after burn
 
-flight_path_angle = atan2(1 + e_t * sin(theta_entry), 1 + e_t * cos(theta_entry));
+flight_path_angle = atan2(e_t * sin(theta_entry), 1 + e_t * cos(theta_entry));
 fprintf('flight path angle = %.4f°\n', rad2deg(flight_path_angle));
 V_entry = V_entry * 1e3;   % we need the value in m/s
 save('Data/orbit.mat', 'V_entry', 'flight_path_angle');

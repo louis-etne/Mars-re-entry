@@ -34,7 +34,7 @@ InitialOrbit = Orbites(a_i*1e3, e_i, 0, 0)./1e3;     % divide by 1e3 because orb
 TransferOrbit = Orbites(a_t*1e3, e_t, 0, 0)./1e3;
 
 
-lon = rad2deg(downrange) + rad2deg(theta_entry);
+lon = rad2deg(theta_entry) - rad2deg(downrange);
 lat = zeros(length(alt), 1);
 lat = lat + 1;
 alt = (alt./1e3 + Mars.radius);

@@ -41,7 +41,7 @@ Pos = SphereToCartesian(alt, lon, 90);
 figure('color','white');
 set(gcf, 'Position', [0 0 3840, 2160]);
 grid on;
-MarsSphere(gcf, 'km')
+MarsSphere(gcf, 'km');
 xlabel('Pos x [km]');
 ylabel('Pos y [km]');
 zlabel('Pos z [km]');
@@ -84,7 +84,7 @@ CustomComet3(ax, trajectory(:, 1), trajectory(:, 2), trajectory(:, 3))
 burnTime = Vehicle.mass/Vehicle.MassFlow * (1-exp(-abs(DeltaV)/Vehicle.Isp));    % s - duration of the deceleration burn
 mass_afterBurn = Vehicle.mass - Vehicle.MassFlow * burnTime;                % kg - mass of Vehicle after burn
 
-flight_path_angle = atan2(1 + e_t * sin(theta_entry), 1 + e_t * cos(theta_entry));
+flight_path_angle = atan2(e_t * sin(theta_entry), 1 + e_t * cos(theta_entry));
 fprintf('flight path angle = %.4f°\n', rad2deg(flight_path_angle));
 V_entry = V_entry * 1e3;   % we need the value in m/s
 save('Data/orbit.mat', 'V_entry', 'flight_path_angle');
