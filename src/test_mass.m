@@ -1,7 +1,7 @@
 addpath('Data');
 load('constants.mat')
 
-peak_heatflux = 10.7; %kwh/m^2 : obtained with simulink simulation (formula slide 11 course 2)
+peak_heatflux = 16.93; %kwh/m^2 : obtained with simulink simulation (formula slide 11 course 2)
 r_n = 1.59; % obtained with Catia Model and Nasa official data
 
 
@@ -23,10 +23,14 @@ mass_tot = 0;
 zones = [0, 0.1, 0.3, 0.5, 0.8, 1];
 
 for i = 1 : length(zones) - 1
+    disp(i);
     phi = delta_max * zones(i);
+    disp(peak_heatflux.*cosd(phi).^1.2);
     mass_needed = 0.24 * (peak_heatflux.*cosd(phi).^1.2) + 0.29 * sqrt(peak_heatflux.*cosd(phi).^1.2) + 11.3;
+    disp(mass_needed);
     mass_tot = mass_tot + mass_needed * Vehicle.S * (zones(i + 1) - zones(i));
+    disp(Vehicle.S * (zones(i + 1) - zones(i)));
 end
-
+disp(mass_tot)
 mass_tot = mass_tot + mass_needed * (surface - Vehicle.S);
 
